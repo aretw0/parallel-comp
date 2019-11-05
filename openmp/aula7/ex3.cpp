@@ -1,4 +1,4 @@
-/* EX3:
+/* 	EX3:
 	Implemente uma busca simples em um vetor.
 	A busca deve ser dividida entre as threads.
 	Para cada posição do vetor testada, a thread deve imprimir na tela se encontrou ou não o elemento.
@@ -6,7 +6,6 @@
 	onde se encontra e qual thread o encontrou. 
 */
 #include <omp.h>
-#include <stdlib.h>
 #include <iostream>
 using namespace std;
 

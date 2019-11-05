@@ -1,6 +1,5 @@
-/* EX3:
-	Implemente um programa que calcule a soma dos elementos de um vetor em paralelo.
-*/
+// EX3:	Implemente um programa que calcule a soma dos elementos de um vetor em paralelo.
+
 #include <omp.h>
 #include <iostream>
 using namespace std;

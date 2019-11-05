@@ -1,4 +1,4 @@
-// EX1: Crie 5 threads que escrevam seus IDs na tela
+// EX1: Crie 5 threads que escrevam seus IDs na tela.
 
 #include <omp.h>
 #include <iostream>

@@ -1,4 +1,4 @@
-/* EX2:
+/*	EX2:
 	Crie um vetor de inteiros de um tamanho qualquer, com valores inicializados.
 	Faça o produto desse vetor com um número escalar (as multiplicações devem ser feitas em paralelo).
 	Ao final, mostre o resultado do vetor após a multiplicação.

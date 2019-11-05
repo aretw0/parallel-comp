@@ -1,4 +1,4 @@
-/* EX3:
+/* 	EX3:
 	Implemente a soma de vetores em paralelo.
 	Crie e inicialize dois vetores A e B.
 	Armazene a soma  deles em um vetor C.

@@ -1,4 +1,4 @@
-/* EX2:
+/* 	EX2:
 	Imagine que threads de um programa paralelo qualquer estão em uma "corrida".
 	Todas elas só podem iniciar suas tarefas em um determinado instante.
 	Implemente um programa que execute uma tarefa qualquer em paralelo,

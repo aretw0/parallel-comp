@@ -1,4 +1,4 @@
-/* EX1:
+/* 	EX1:
 	Implemente um programa que realize a soma e a subtração de dois vetores simultaneamente, ou seja,
 	dado um vetor A e B com valores, realize a soma e armazene em  C  e  a  subtração  em  D.
 	O cálculo de C e D deve ser feito de forma simultânea, por  2 threads. 

@@ -1,4 +1,4 @@
-/* EX4:
+/* 	EX4:
 	Implemente um programa paralelo que varra um vetor e mostre seus elementos na tela,
 	juntamente com a identificação da thread que o imprimiu.
 	Os elementos devem ser impressos necessariamente em ORDEM. 
@@ -32,8 +32,8 @@ int main() {
 	      }
 	    }while(!unique);
 	    nCount[i]=n;
-
 	}
+	
 	omp_set_num_threads(N);
 	#pragma omp parallel for ordered schedule(static, STEP)
 	for (i = 0; i < TAM; ++i) {
