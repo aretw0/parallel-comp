@@ -29,24 +29,33 @@ int main() {
     //  int resto = num1 % num2;
 
 	// inicializando com valores aleatórios e únicos
-    for (size_t i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {   
         #pragma omp parallel sections
         {
             #pragma omp section
             {
-                res1 = rand() % PPT
+                res1 = rand() % PPT;
             }
             #pragma omp section
             {
-                res2 = rand() % PPT
+                res2 = rand() % PPT;
             }
-            #pragma omp barrier
         }
-        if (res1 != res2){
+        if (res1 != res2) {
             if (res1 == PEDRA && res2 == TESOURA) {
                 ++win1;
-            } else
+            } else if (res2 == PEDRA && res1 == TESOURA) {
+                ++win2;
+            } else if (res1 == PEDRA && res2 == PAPEL) {
+                ++win2;
+            } else if (res2 == PEDRA && res1 == PAPEL) {
+                ++win1;
+            } else if (res1 == PAPEL && res2 == TESOURA) {
+                ++win2;
+            } else if (res2 == PAPEL && res1 == TESOURA) {
+                ++win1;
+            }
         }
     }
 
