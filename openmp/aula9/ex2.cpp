@@ -6,6 +6,7 @@
 */
 #include <omp.h>
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 #define PPT 3
@@ -19,6 +20,8 @@ int main() {
     int res1, res2;
 
 	int n = 1;
+
+    srand(time(NULL));
 
     cout << "- Pedra, papel e tesoura -\n\nEntre com o nº de rodadas: ";
 	cin >> n;
