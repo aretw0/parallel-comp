@@ -5,6 +5,7 @@
 */
 #include <omp.h>
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 #define N 10
@@ -13,6 +14,7 @@ using namespace std;
 
 int main() {
 	int i, n, nCount[TAM];
+	srand(time(NULL));
 
 	// inicializando com valores aleatórios e únicos
 	for(i=0;i<TAM;i++)

@@ -1,10 +1,11 @@
 /* 	EX2:
-	Paralelize o exemplo a seguir sem o uso da diretiva #pragma ompparallel for.
+	Paralelize o exemplo a seguir sem o uso da diretiva #pragma omp parallel for.
 	for(i = 0; i < n; i++)
 		z[i] = a * x[i] + y;
 */
 #include <omp.h>
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 #define N 4
@@ -14,6 +15,7 @@ int main() {
 	int i, tid, lim, n, nthreads, nCount[TAM], rCount[TAM];
 
 	int a = 5, y = 10;
+	srand(time(NULL));
 
 	// inicializando com valores aleatórios e únicos
 	for(i=0;i<TAM;i++)
@@ -47,6 +49,9 @@ int main() {
 		n = TAM / nthreads;
 
 		lim = (tid + 1) * n;
+		if (tid == (nthreads - 1)) {
+        	lim = TAM;
+		}
 		#pragma omp critical
 		cout << "Thread nº" << tid << "\tParams: nthreads(" << nthreads << ") - n(" << n << ") - lim(" << lim << ")\n";
 

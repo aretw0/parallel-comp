@@ -10,7 +10,7 @@ using namespace std;
 #define N 10
 
 int main() {
-	int i
+	int i;
 	float a[N], b[N],c[N],d[N];
 
 	#pragma omp parallel for simd

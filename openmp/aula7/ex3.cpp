@@ -7,6 +7,7 @@
 */
 #include <omp.h>
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 #define N 5
@@ -17,7 +18,8 @@ int main() {
 	bool uniqueOn = false; // desligar unicidade ou não
 	
 	int n, i, tid, tWin[N] = { 0 }, nCount[TAM];
-	bool findit = false; 
+	bool findit = false;
+	srand(time(NULL));
 
 	// inicializando com valores aleatórios e únicos
 	for(i=0;i<TAM;i++)
