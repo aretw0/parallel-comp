@@ -2,7 +2,6 @@
 #include <iostream>
 using namespace std;
 
-
 int main() {
 	int nthreads, tid;
 	#pragma omp parallel private(nthreads,tid)
