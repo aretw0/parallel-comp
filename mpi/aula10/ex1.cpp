@@ -13,39 +13,56 @@ using namespace std;
 
 #define MAX 100 // 0-MAX
 #define TAM 50 // Nunca maior que MAX
-#define target 5 // alvo
  
 int main(int argc, char* argv[]) {
-    int i, n, lim, rank, tam, nCount[TAM], prey = -1;
+    int i, n, lim, rank, tam, nCount[TAM], prey = -1, target;
     bool findit = false;
-    srand(time(NULL));
-
-    for(i=0;i<TAM;i++)
-	{
-        bool unique;
-        do
-        {
-            unique=true;
-            n=rand()%(1+MAX);
-            for(int i1=0;i1<i;i1++)
-            {
-                if(nCount[i1]==n)
-                {
-                unique=false;     
-                break;
-                }
-            }
-        }while(!unique);
-        nCount[i]=n;
-	}
-
-   /*  cout << "- Busca paralela -\n\nEntre com um inteiro positivo entre 0 a "<< MAX <<": ";
-	cin >> target;
-	cout << endl; */
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
     MPI_Comm_size(MPI_COMM_WORLD,&tam);
+
+    if (rank == 0) {
+        srand(time(NULL));
+
+        for(i=0;i<TAM;i++)
+        {
+            bool unique;
+            do
+            {
+                unique=true;
+                n=rand()%(1+MAX);
+                for(int i1=0;i1<i;i1++)
+                {
+                    if(nCount[i1]==n)
+                    {
+                        unique=false;     
+                        break;
+                    }
+                }
+            }while(!unique);
+            nCount[i]=n;
+        }
+        cout << "- Busca paralela -\n\nEntre com um inteiro positivo entre 0 a "<< MAX << ": ";
+        cin >> target;
+        cout << endl;
+        for (i = 0; i < tam; i++) {
+            if (i != rank) {
+                MPI_Send(&target, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
+                MPI_Send(&nCount, TAM, MPI_INT, i, 0, MPI_COMM_WORLD);
+            }
+        }
+
+    } else {
+        MPI_Recv(&target, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        // cout << "\nProcesso nº" << rank << " de "<< tam << " recebeu " << target << endl;
+        MPI_Recv(&nCount, TAM, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        /* cout << "\nProcesso nº" << rank << " de "<< tam << " recebeu:\n";
+        for (i = 0; i < TAM; i++)
+        {
+            cout << nCount[i] << endl;
+        } */
+    }
 
     n = TAM / tam;
 
@@ -53,23 +70,26 @@ int main(int argc, char* argv[]) {
     if (rank == (tam - 1)) {
         lim = TAM;
     }
-	cout << "Processo nº" << rank << " de "<< tam << ". Params: n(" << n << ") - lim(" << lim << ")\n";
+	// cout << "Processo nº" << rank << " de "<< tam << ". Params: n(" << n << ") - lim(" << lim << ")\n";
 
     for(i = rank * n; i < lim; i++) {
         if (i >= TAM ) break;
         cout << "Processo nº" << rank << " de "<< tam;
         if (nCount[i] == target) {
-            cout << " encontrou!\n";
+            cout << " encontrou.\n";
             findit = true;
             prey = i;
             break;
         } else {
-            cout<< " não encontrou!\n";
+            cout<< " não encontrou.\n";
         }
     }
 
+    cout << "\nProcesso nº" << rank << " de "<< tam;
     if (findit) {
-        cout << "Processo nº" << rank << " de "<< tam << " encontrou " << target << " na posição " << prey << endl;
+        cout << " encontrou " << target << " na posição " << prey << ".\n\n";
+    } else {
+        cout << " não encontrou "<< target << ".\n\n";
     }
    
     MPI_Finalize();
