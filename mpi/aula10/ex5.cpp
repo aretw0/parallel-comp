@@ -61,9 +61,6 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        delete [] nCount;  // When done, free memory pointed to by a.
-        nCount = NULL;
-
         float medsSum = 0;
 
         for (i = 1; i < tam; i++) {
@@ -89,13 +86,13 @@ int main(int argc, char* argv[]) {
         for(i = 0; i < size; i++) {
             sum += nCount[i];
         }
-        delete [] nCount; 
-        nCount = NULL;
         
         med = (float)sum/(float)size;
         // cout << "Média de Processo nº" << rank << " de "<< tam << ": " << med << endl;
         MPI_Send(&med, 1, MPI_FLOAT, 0, rank, MPI_COMM_WORLD);
     }
+    delete [] nCount; 
+    nCount = NULL;
     MPI_Finalize();
     return 0;
 }
