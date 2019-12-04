@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
     med = (float)sum/(float)n;
     // cout << "Média de Processo nº" << rank << " de "<< tam << ": " << med << endl;
     
-    MPI_Gather(&med, 1, MPI_FLOAT, recData, 1,MPI_FLOAT, 0, MPI_COMM_WORLD);
+    MPI_Gather(&med, 1, MPI_FLOAT, recData, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
     if (rank == 0) {
         float fsum = 0;
