@@ -13,20 +13,20 @@
 #include <time.h>
 using namespace std; 
 
-#define MAX 20 // 0-MAX
-#define TAM 20 // Nunca maior que MAX
+#define MAX 10000 // 0-MAX
+#define TAM 10000 // Nunca maior que MAX
  
 int main(int argc, char* argv[]) {
-    int i, n, lim, rank, tam, sum = 0, *rCount = NULL, *nCount = NULL;
+    int i, size, n, lim, rank, tam, sum = 0, *rCount = NULL, *nCount = NULL;
     float med, *recData = NULL;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
     MPI_Comm_size(MPI_COMM_WORLD,&tam);
 
-    n = TAM / tam;
+    size = TAM / tam;
 
-    rCount = new int[n];
+    rCount = new int[size];
 
     if (rank == 0) {
         recData = new float[tam];
@@ -58,26 +58,26 @@ int main(int argc, char* argv[]) {
         } */
     }
 
-    MPI_Scatter(nCount, n, MPI_INT, rCount, n, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatter(nCount, size, MPI_INT, rCount, size, MPI_INT, 0, MPI_COMM_WORLD);
         
     // cout << "\nProcesso nº" << rank << " de "<< tam << " recebeu:\n";
-    for(i = 0; i < n; i++) {
+    for(i = 0; i < size; i++) {
         // cout << rCount[i] << endl;
         if (i >= TAM ) break;
         sum += rCount[i];
     }
 
-    med = (float)sum/(float)n;
+    med = (float)sum/(float)size;
     // cout << "Média de Processo nº" << rank << " de "<< tam << ": " << med << endl;
     
     MPI_Gather(&med, 1, MPI_FLOAT, recData, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
     if (rank == 0) {
         float fsum = 0;
-         cout << "Recebeu: " << endl;
+        // cout << "Recebeu: " << endl;
         for (i = 0; i < tam; i++)
         {
-            cout << recData[i] << endl;
+            // cout << recData[i] << endl;
             fsum += recData[i];
         }
 

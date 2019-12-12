@@ -13,36 +13,49 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    int i, rank, tam, *VetInt = NULL;
+    int i, rank, tam, *VetInt = NULL, *RecInt = NULL, rec;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
     MPI_Comm_size(MPI_COMM_WORLD,&tam);
 
     VetInt = new int[tam];
+    RecInt = new int[tam];
     int val = rank * tam;
     for (i = 0; i < tam; ++i) {
         VetInt[i] = val++;
     }
-    /* cout << "Processo " << rank << " inicializou:\n";
-    for (i = 0; i < tam; ++i) {
-        cout << VetInt[i] << endl;
+    
+    /* for (i = 0; i < tam; ++i) {
+        cout << "Processo " << rank << " inicializou: " << VetInt[i] << endl;
     } */
 
-    MPI_Scatter(VetInt, 1, MPI_INT, VetInt, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Gather(VetInt, 1, MPI_INT, VetInt, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Allgather(VetInt, 1, MPI_INT, VetInt, 1, MPI_INT, MPI_COMM_WORLD);
-    MPI_Alltoall (VetInt, 1, MPI_INT, VetInt, 1, MPI_INT, MPI_COMM_WORLD);
+    MPI_Scatter(VetInt, 1, MPI_INT, &rec, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    cout << "Processo " << rank << " recebeu (SCATTER): " << rec << endl;
+    MPI_Gather(&rec, 1, MPI_INT, RecInt, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     if (rank == 0) {
-        cout << "Resultado final: \n";
         for (i = 0; i < tam; ++i) {
-            cout << VetInt[i] << endl;
+            cout << "Processo " << rank << " recebeu (GATHER): " << RecInt[i] << endl;
         }
+    }
+
+    MPI_Allgather(&rec, 1, MPI_INT, RecInt, 1, MPI_INT, MPI_COMM_WORLD);
+
+    for (i = 0; i < tam; ++i) {
+        cout << "Processo " << rank << " recebeu (ALLGATHER): " << RecInt[i] << endl;
+    }
+
+    MPI_Alltoall(VetInt, 1, MPI_INT, RecInt, 1, MPI_INT, MPI_COMM_WORLD);
+
+    for (i = 0; i < tam; ++i) {
+        cout << "Processo " << rank << " recebeu (ALLTOALL): " << RecInt[i] << endl;
     }
 
     delete [] VetInt;
     VetInt = NULL;
+    delete [] RecInt;
+    RecInt = NULL;
     MPI_Finalize();
     return 0;
 }
